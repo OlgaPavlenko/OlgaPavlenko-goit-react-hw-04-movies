@@ -8,10 +8,9 @@ export default function Reviews({ movieId }) {
     moviesAPI
       .fetchMovieReviews(movieId)
       .then((request) => {
-        console.log(request);
         setReview(request);
       })
-      .catch(console.log);
+      .catch();
   }, [movieId]);
 
   return (

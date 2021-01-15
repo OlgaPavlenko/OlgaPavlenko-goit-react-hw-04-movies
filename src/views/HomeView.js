@@ -1,18 +1,16 @@
 import { useState, useEffect } from "react";
-import { Link, useParams, useRouteMatch } from "react-router-dom";
+import { Link } from "react-router-dom";
 import * as moviesAPI from "../services/movie-api";
 
 export default function HomePage() {
-  const { url } = useRouteMatch();
   const [movie, setMovie] = useState(null);
-  // console.log(url);
   useEffect(() => {
     moviesAPI
       .fetchTopMovie()
       .then((response) => {
         setMovie(response.results);
       })
-      .catch(console.log);
+      .catch();
   }, []);
 
   return (

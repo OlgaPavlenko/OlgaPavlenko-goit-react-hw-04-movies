@@ -1,23 +1,34 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
-// import PropTypes from "prop-types";
+import { useState, useEffect } from "react";
+import { Link, useHistory, useLocation } from "react-router-dom";
+// eslint-disable-next-line
 import s from "../SearchBar/SearchBar.module.css";
 import * as moviesAPI from "../../services/movie-api";
 
 export default function Searchbar() {
   const [searchQuery, setSearchQuery] = useState("");
   const [movies, setMovies] = useState([]);
+  const history = useHistory();
+  const location = useLocation();
+  const query = new URLSearchParams(location.search).get("query");
+
+  useEffect(() => {
+    if (!query) {
+      return;
+    }
+
+    onSubmit(query);
+    // eslint-disable-next-line
+  }, []);
 
   const onSubmit = (searchQuery) => {
-    setSearchQuery(searchQuery);
-
+    history.push({ ...location, search: `query=${searchQuery}` });
     if (!searchQuery) {
       return;
     }
     moviesAPI
       .fetchMovieByName(searchQuery)
       .then(({ results }) => setMovies(results))
-      .catch(console.log);
+      .catch();
   };
 
   const changeInput = (evt) => {
@@ -60,7 +71,14 @@ export default function Searchbar() {
                 alt={movie.title}
               />
               <p>
-                <Link to={`/movies/${movie.id}`}>{movie.title}</Link>
+                <Link
+                  to={{
+                    pathname: `/movies/${movie.id}`,
+                    state: { from: location },
+                  }}
+                >
+                  {movie?.title}
+                </Link>
               </p>
             </li>
           ))}

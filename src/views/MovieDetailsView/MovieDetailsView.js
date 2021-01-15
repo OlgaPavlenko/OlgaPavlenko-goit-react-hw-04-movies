@@ -1,11 +1,11 @@
 import { useState, useEffect, lazy, Suspense } from "react";
+import Button from "../../components/Button/Button";
 import {
   NavLink,
   useParams,
   useRouteMatch,
   Route,
   Switch,
-  useHistory,
   useLocation,
 } from "react-router-dom";
 import * as moviesAPI from "../../services/movie-api";
@@ -22,17 +22,15 @@ export default function MovieDetailsView() {
   const { url } = useRouteMatch();
   const { movieId } = useParams();
   const [movie, setMovie] = useState(null);
-
-  const history = useHistory();
   const location = useLocation();
-  console.log(location);
-
   useEffect(() => {
-    moviesAPI.fetchMovieById(movieId).then(setMovie).catch(console.log);
+    moviesAPI.fetchMovieById(movieId).then(setMovie).catch();
   }, [movieId]);
   return (
     movie && (
       <>
+        <Button location={location} />
+
         <div>
           <img
             src={`https://image.tmdb.org/t/p/w200/${movie.poster_path}`}
@@ -40,7 +38,14 @@ export default function MovieDetailsView() {
           />
           <h1>{movie.title}</h1>
           <p>Rating: {movie.vote_average}</p>
-          <p>Genre: {movie.genres[0].name}</p>
+          <div>
+            {!!movie.genres.length && <span>Genre:</span>}
+            <ul>
+              {movie.genres.map(({ name, id }) => (
+                <li key={id}>{name}</li>
+              ))}
+            </ul>
+          </div>
           <p>{movie.runtime} mins</p>
           <span>Overview: {movie.overview}</span>
         </div>

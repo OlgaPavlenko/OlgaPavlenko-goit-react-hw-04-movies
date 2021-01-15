@@ -1,5 +1,6 @@
 import * as moviesAPI from "../../services/movie-api";
 import { useState, useEffect } from "react";
+import unknown from "../../images/unknown.jpg";
 
 export default function CastView({ movieId }) {
   const [cast, setCast] = useState(null);
@@ -10,7 +11,7 @@ export default function CastView({ movieId }) {
       .then((request) => {
         setCast(request.cast);
       })
-      .catch(console.log);
+      .catch();
   }, [movieId]);
 
   return (
@@ -18,21 +19,18 @@ export default function CastView({ movieId }) {
       <>
         <div>
           <ul>
-            {cast.map((item) => (
-              <>
-                {item.profile_path && (
-                  <li key={item.id}>
-                    <img
-                      src={`https://image.tmdb.org/t/p/w200/${item.profile_path}`}
-                      alt={item.name}
-                      widht="100"
-                      height="150"
-                    />
-                    <p> {item.name}</p>
-                  </li>
-                )}
-              </>
-            ))}
+            {cast.map(({ name, profile_path }, index) => {
+              let myImg = `https://image.tmdb.org/t/p/w200/${profile_path}`;
+              if (!profile_path) {
+                myImg = unknown;
+              }
+              return (
+                <li key={index}>
+                  <img src={myImg} alt={name} widht="100" height="150" />
+                  <p> {name}</p>
+                </li>
+              );
+            })}
           </ul>
         </div>
       </>
