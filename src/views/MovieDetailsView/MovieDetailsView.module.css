@@ -1,0 +1,53 @@
+.movie {
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.container {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 15px;
+}
+
+li {
+  list-style-type: none;
+}
+
+img,
+h1,
+p,
+span {
+  display: block;
+  margin-bottom: 20px;
+  padding: 0;
+}
+
+span {
+  margin: 0;
+}
+
+.picture {
+  margin-right: 15px;
+}
+
+.genre {
+  display: flex;
+  flex-direction: row;
+}
+
+.genreName {
+  margin-left: -40px;
+  margin-right: 5px;
+}
+
+.genreDiscr {
+  margin-right: 5px;
+}
+
+.navigation {
+  text-align: center;
+}
+
+.cast {
+  margin-right: 15px;
+}

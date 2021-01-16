@@ -10,6 +10,7 @@ import {
 } from "react-router-dom";
 import * as moviesAPI from "../../services/movie-api";
 import Spinner from "../../components/Loader/Loader";
+import s from "../MovieDetailsView/MovieDetailsView.module.css";
 
 const CastView = lazy(() =>
   import("../CastView/CastView" /* webpackChunkName: "CastView" */)
@@ -29,43 +30,61 @@ export default function MovieDetailsView() {
   return (
     movie && (
       <>
-        <Button location={location} />
+        <div className={s.movie}>
+          <Button location={location} />
 
-        <div>
-          <img
-            src={`https://image.tmdb.org/t/p/w200/${movie.poster_path}`}
-            alt={movie.title}
-          />
-          <h1>{movie.title}</h1>
-          <p>Rating: {movie.vote_average}</p>
-          <div>
-            {!!movie.genres.length && <span>Genre:</span>}
-            <ul>
-              {movie.genres.map(({ name, id }) => (
-                <li key={id}>{name}</li>
-              ))}
-            </ul>
+          <div className={s.container}>
+            <img
+              className={s.picture}
+              src={`https://image.tmdb.org/t/p/w200/${movie.poster_path}`}
+              alt={movie.title}
+            />
+            <div>
+              <h1>{movie.title}</h1>
+              <p>
+                <b>Rating:</b> {movie.vote_average}
+              </p>
+              <div>
+                {!!movie.genres.length && (
+                  <ul className={s.genre}>
+                    <b className={s.genreName}>Genre: </b>
+                    {movie.genres.map(({ name, id }) => (
+                      <li key={id} className={s.genreDiscr}>
+                        {name}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+              <p>
+                <b>Runtime: </b>
+                {movie.runtime} mins
+              </p>
+              <span>
+                <b>Overview:</b> {movie.overview}
+              </span>
+            </div>
           </div>
-          <p>{movie.runtime} mins</p>
-          <span>Overview: {movie.overview}</span>
+
+          <nav className={s.navigation}>
+            <NavLink to={`${url}/cast`} className={s.cast}>
+              Cast
+            </NavLink>
+            <NavLink to={`${url}/reviews`}>Reviews</NavLink>
+          </nav>
+          <hr />
+          <Suspense fallback={<Spinner />}>
+            <Switch>
+              <Route path={`${url}/cast`}>
+                <CastView movieId={movieId} />
+              </Route>
+
+              <Route path={`${url}/reviews`}>
+                <Reviews movieId={movieId} />
+              </Route>
+            </Switch>
+          </Suspense>
         </div>
-
-        <nav>
-          <NavLink to={`${url}/cast`}>Cast</NavLink>
-          <NavLink to={`${url}/reviews`}>Reviews</NavLink>
-        </nav>
-        <hr />
-        <Suspense fallback={<Spinner />}>
-          <Switch>
-            <Route path={`${url}/cast`}>
-              <CastView movieId={movieId} />
-            </Route>
-
-            <Route path={`${url}/reviews`}>
-              <Reviews movieId={movieId} />
-            </Route>
-          </Switch>
-        </Suspense>
       </>
     )
   );

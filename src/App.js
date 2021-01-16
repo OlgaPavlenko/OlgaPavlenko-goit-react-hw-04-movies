@@ -5,7 +5,7 @@ import AppBar from "./components/AppBar/AppBar";
 import Spinner from "./components/Loader/Loader";
 
 const HomeView = lazy(() =>
-  import("./views/HomeView" /* webpackChunkName: "HomeView" */)
+  import("./views/HomeView/HomeView" /* webpackChunkName: "HomeView" */)
 );
 const MoviesView = lazy(() =>
   import("./views/MoviesView/MoviesView" /* webpackChunkName: "MoviesView" */)

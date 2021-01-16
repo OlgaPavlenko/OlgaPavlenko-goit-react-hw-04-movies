@@ -1,4 +1,5 @@
 import { useHistory } from "react-router-dom";
+import s from "../Button/Button.module.css";
 
 export default function Button({ location }) {
   const history = useHistory();
@@ -11,5 +12,9 @@ export default function Button({ location }) {
       history.push("/");
     }
   };
-  return <button onClick={onBack}>Go Back</button>;
+  return (
+    <button onClick={onBack} className={s.button}>
+      Go Back
+    </button>
+  );
 }
