@@ -65,24 +65,22 @@ export default function Searchbar() {
         <ul className={s.list}>
           {movies &&
             movies.map((movie) => (
-              <li key={movie.id} className={s.item}>
-                <img
-                  src={`https://image.tmdb.org/t/p/w200/${movie.poster_path}`}
-                  alt={movie.title}
-                  className={s.image}
-                />
-                <p className={s.title}>
-                  <Link
-                    to={{
-                      pathname: `/movies/${movie.id}`,
-                      state: { from: location },
-                    }}
-                    className={s.link}
-                  >
-                    {movie?.title}
-                  </Link>
-                </p>
-              </li>
+              <Link
+                to={{
+                  pathname: `/movies/${movie.id}`,
+                  state: { from: location },
+                }}
+                className={s.link}
+              >
+                <li key={movie.id} className={s.item}>
+                  <img
+                    src={`https://image.tmdb.org/t/p/w200/${movie.poster_path}`}
+                    alt={movie.title}
+                    className={s.image}
+                  />
+                  <p className={s.title}>{movie?.title}</p>
+                </li>
+              </Link>
             ))}
         </ul>
       </div>
